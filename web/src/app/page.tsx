@@ -12,17 +12,17 @@ export default function LandingPage() {
           <div className="text-center animate-fade-in">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-medium rounded-full mb-6">
               <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
-              UMKM Lokal Terpercaya
+              ✨ UMKM Lokal Terpercaya
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight tracking-tight">
-              Produk Sabun
+              Bersih <span className="text-cyan-300">Cemerlang</span>,
               <br />
-              <span className="text-cyan-300">Berkualitas Premium</span>
+              Hidup <span className="text-cyan-300">Cemerlang</span>
             </h1>
 
             <p className="text-lg sm:text-xl text-blue-100 max-w-2xl mx-auto mb-10 leading-relaxed">
-              Sabun cuci piring, cuci tangan, kendaraan, dan detergen dengan formula terbaik untuk kebutuhan rumah tangga dan usaha Anda.
+              Sabun premium untuk segala kebutuhan — cuci piring, cuci tangan, kendaraan, hingga detergen. Hasil bersih cemerlang, harga bersahabat!
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

@@ -53,10 +53,11 @@ export async function POST(req: NextRequest) {
 
     console.log("✅ Order created:", order.id);
 
-    // 2. Insert order items (without variant_id to avoid missing column error)
+    // 2. Insert order items (now includes variant_id for stock restore on cancel)
     const orderItems = items.map((item) => ({
       order_id: order.id,
       product_id: item.product_id,
+      variant_id: item.variant_id || null,
       quantity: item.quantity,
       price: item.price,
     }));

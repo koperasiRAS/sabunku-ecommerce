@@ -313,15 +313,17 @@ export default function AdminDashboard() {
       {(() => {
         const totalRevenue = orders.filter(o => o.status === 'done').reduce((s, o) => s + Number(o.total_price), 0);
         const pendingRevenue = orders.filter(o => o.status !== 'done' && o.status !== 'cancelled').reduce((s, o) => s + Number(o.total_price), 0);
-        const totalOrders = orders.length;
+        const activeOrders = orders.filter(o => o.status !== 'cancelled');
+        const totalOrders = activeOrders.length;
         const completedOrders = orders.filter(o => o.status === 'done').length;
+        const cancelledOrders = orders.filter(o => o.status === 'cancelled').length;
         const recentOrders = orders.slice(0, 5);
         const statusColor: Record<string,string> = { pending:'text-amber-600 bg-amber-50', confirmed:'text-blue-600 bg-blue-50', shipped:'text-purple-600 bg-purple-50', done:'text-emerald-600 bg-emerald-50', cancelled:'text-red-500 bg-red-50' };
         const statusLabel: Record<string,string> = { pending:'Menunggu', confirmed:'Dikonfirmasi', shipped:'Dikirim', done:'Selesai', cancelled:'Dibatalkan' };
         return (
           <div className="mb-8">
             <h2 className="text-lg font-bold text-slate-800 mb-4">📊 Dashboard Penjualan</h2>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
               <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
                 <p className="text-xs text-slate-500 font-medium">Total Pendapatan</p>
                 <p className="text-xl font-bold text-emerald-600 mt-1">{formatRupiah(totalRevenue)}</p>
@@ -335,10 +337,15 @@ export default function AdminDashboard() {
               <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
                 <p className="text-xs text-slate-500 font-medium">Total Pesanan</p>
                 <p className="text-2xl font-bold text-blue-600 mt-1">{totalOrders}</p>
+                <p className="text-[10px] text-slate-400 mt-0.5">tidak termasuk batal</p>
               </div>
               <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
                 <p className="text-xs text-slate-500 font-medium">Rata-rata/Order</p>
-                <p className="text-xl font-bold text-slate-800 mt-1">{totalOrders > 0 ? formatRupiah(Math.round(orders.reduce((s,o) => s + Number(o.total_price), 0) / totalOrders)) : 'Rp0'}</p>
+                <p className="text-xl font-bold text-slate-800 mt-1">{totalOrders > 0 ? formatRupiah(Math.round(activeOrders.reduce((s,o) => s + Number(o.total_price), 0) / totalOrders)) : 'Rp0'}</p>
+              </div>
+              <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
+                <p className="text-xs text-slate-500 font-medium">Dibatalkan</p>
+                <p className="text-2xl font-bold text-red-500 mt-1">{cancelledOrders}</p>
               </div>
             </div>
 

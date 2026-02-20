@@ -38,6 +38,8 @@ export default function AdminOrdersPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
   const [toast, setToast] = useState<string | null>(null);
+  const [processingId, setProcessingId] = useState<string | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -75,6 +77,51 @@ export default function AdminOrdersPage() {
     }
   };
 
+  // Cancel order via API (restores stock)
+  const cancelOrder = async (orderId: string) => {
+    setProcessingId(orderId);
+    try {
+      const res = await fetch("/api/cancel-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ order_id: orderId }),
+      });
+      const result = await res.json();
+      if (res.ok) {
+        showToast("Pesanan dibatalkan, stok dikembalikan ✅");
+        fetchOrders();
+      } else {
+        showToast(`Gagal: ${result.error}`);
+      }
+    } catch {
+      showToast("Gagal membatalkan pesanan");
+    }
+    setProcessingId(null);
+  };
+
+  // Delete cancelled order via API
+  const deleteOrder = async (orderId: string) => {
+    setProcessingId(orderId);
+    try {
+      const res = await fetch("/api/delete-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ order_id: orderId }),
+      });
+      const result = await res.json();
+      if (res.ok) {
+        showToast("Pesanan dihapus permanen 🗑️");
+        fetchOrders();
+      } else {
+        showToast(`Gagal: ${result.error}`);
+      }
+    } catch {
+      showToast("Gagal menghapus pesanan");
+    }
+    setProcessingId(null);
+    setDeleteConfirmId(null);
+  };
+
   const filtered = filter === "all" ? orders : orders.filter((o) => o.status === filter);
 
   const formatDate = (dateStr: string) => {
@@ -88,9 +135,11 @@ export default function AdminOrdersPage() {
   };
 
   // Stats
+  const activeOrders = orders.filter((o) => o.status !== "cancelled");
   const pendingCount = orders.filter((o) => o.status === "pending").length;
   const shippedCount = orders.filter((o) => o.status === "shipped").length;
   const doneCount = orders.filter((o) => o.status === "done").length;
+  const cancelledCount = orders.filter((o) => o.status === "cancelled").length;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -106,7 +155,7 @@ export default function AdminOrdersPage() {
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Riwayat Pesanan</h1>
           <p className="text-sm text-slate-500 mt-1">
-            Kelola dan pantau status pesanan pelanggan
+            Kelola dan pantau status pesanan pelanggan ({activeOrders.length} aktif, {cancelledCount} batal)
           </p>
         </div>
         <Link
@@ -121,7 +170,7 @@ export default function AdminOrdersPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-4 gap-4 mb-6">
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
           <p className="text-xs text-slate-500 font-medium">Menunggu</p>
           <p className="text-2xl font-bold text-amber-600 mt-1">{pendingCount}</p>
@@ -134,6 +183,10 @@ export default function AdminOrdersPage() {
           <p className="text-xs text-slate-500 font-medium">Selesai</p>
           <p className="text-2xl font-bold text-emerald-600 mt-1">{doneCount}</p>
         </div>
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
+          <p className="text-xs text-slate-500 font-medium">Dibatalkan</p>
+          <p className="text-2xl font-bold text-red-500 mt-1">{cancelledCount}</p>
+        </div>
       </div>
 
       {/* Filter tabs */}
@@ -144,13 +197,16 @@ export default function AdminOrdersPage() {
           { key: "confirmed", label: "Dikonfirmasi" },
           { key: "shipped", label: "Dikirim" },
           { key: "done", label: "Selesai" },
+          { key: "cancelled", label: "Dibatalkan" },
         ].map((tab) => (
           <button
             key={tab.key}
             onClick={() => setFilter(tab.key)}
             className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
               filter === tab.key
-                ? "bg-blue-600 text-white shadow-md"
+                ? tab.key === "cancelled"
+                  ? "bg-red-500 text-white shadow-md"
+                  : "bg-blue-600 text-white shadow-md"
                 : "bg-white text-slate-600 border border-slate-200 hover:border-blue-300"
             }`}
           >
@@ -181,7 +237,9 @@ export default function AdminOrdersPage() {
           {filtered.map((order) => (
             <div
               key={order.id}
-              className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 animate-fade-in"
+              className={`bg-white rounded-2xl border shadow-sm p-4 sm:p-5 animate-fade-in ${
+                order.status === "cancelled" ? "border-red-100 opacity-75" : "border-slate-100"
+              }`}
             >
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
                 <div>
@@ -203,7 +261,7 @@ export default function AdminOrdersPage() {
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-lg font-bold text-slate-900">
+                  <p className={`text-lg font-bold ${order.status === "cancelled" ? "text-slate-400 line-through" : "text-slate-900"}`}>
                     {formatRupiah(order.total_price)}
                   </p>
                 </div>
@@ -211,7 +269,7 @@ export default function AdminOrdersPage() {
 
               {/* Status Actions */}
               <div className="flex flex-wrap gap-2 pt-3 border-t border-slate-50">
-                {STATUS_FLOW.map((status) => {
+                {order.status !== "cancelled" && STATUS_FLOW.map((status) => {
                   const currentIdx = STATUS_FLOW.indexOf(order.status);
                   const statusIdx = STATUS_FLOW.indexOf(status);
                   const isNext = statusIdx === currentIdx + 1;
@@ -234,13 +292,50 @@ export default function AdminOrdersPage() {
                     </button>
                   );
                 })}
+
+                {/* Cancel button */}
                 {order.status !== "cancelled" && order.status !== "done" && (
                   <button
-                    onClick={() => updateStatus(order.id, "cancelled")}
-                    className="px-3 py-1.5 text-xs font-medium text-red-500 bg-red-50 rounded-lg hover:bg-red-100 transition-all ml-auto"
+                    onClick={() => cancelOrder(order.id)}
+                    disabled={processingId === order.id}
+                    className="px-3 py-1.5 text-xs font-medium text-red-500 bg-red-50 rounded-lg hover:bg-red-100 transition-all ml-auto disabled:opacity-50"
                   >
-                    Batalkan
+                    {processingId === order.id ? "Memproses..." : "Batalkan"}
                   </button>
+                )}
+
+                {/* Delete button for cancelled orders */}
+                {order.status === "cancelled" && (
+                  <>
+                    {deleteConfirmId === order.id ? (
+                      <div className="flex items-center gap-2 ml-auto">
+                        <span className="text-xs text-red-500 font-medium">Yakin hapus?</span>
+                        <button
+                          onClick={() => deleteOrder(order.id)}
+                          disabled={processingId === order.id}
+                          className="px-3 py-1.5 text-xs font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition-all disabled:opacity-50"
+                        >
+                          {processingId === order.id ? "Menghapus..." : "Ya, Hapus"}
+                        </button>
+                        <button
+                          onClick={() => setDeleteConfirmId(null)}
+                          className="px-3 py-1.5 text-xs font-medium text-slate-500 bg-slate-100 rounded-lg hover:bg-slate-200 transition-all"
+                        >
+                          Batal
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setDeleteConfirmId(order.id)}
+                        className="px-3 py-1.5 text-xs font-medium text-red-500 bg-red-50 rounded-lg hover:bg-red-100 transition-all ml-auto flex items-center gap-1"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        Hapus Permanen
+                      </button>
+                    )}
+                  </>
                 )}
               </div>
             </div>

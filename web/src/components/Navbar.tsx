@@ -74,7 +74,14 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
-
+            {!isAdmin && (
+              <Link
+                href="/admin/login"
+                className="text-sm font-medium text-slate-400 hover:text-slate-600 transition-colors duration-200"
+              >
+                Admin
+              </Link>
+            )}
           </div>
 
           {/* Mobile menu button + Cart icon */}
@@ -150,7 +157,15 @@ export default function Navbar() {
             >
               Keranjang
             </Link>
-
+            {!isAdmin && (
+              <Link
+                href="/admin/login"
+                onClick={() => setMenuOpen(false)}
+                className="block py-2 text-sm font-medium text-slate-400 hover:text-slate-600"
+              >
+                Admin
+              </Link>
+            )}
           </div>
         )}
       </div>

@@ -8,39 +8,55 @@ export default function LandingPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600"></div>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE4YzMuMzEgMCA2IDIuNjkgNiA2cy0yLjY5IDYtNiA2LTYtMi42OS02LTYgMi42OS02IDYtNiIvPjwvZz48L2c+PC9zdmc+')] opacity-30"></div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 lg:py-40">
-          <div className="text-center animate-fade-in">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-medium rounded-full mb-6">
-              <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
-              ✨ UMKM Lokal Terpercaya
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-32">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            {/* Left: Text & CTA */}
+            <div className="text-center lg:text-left animate-fade-in">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-medium rounded-full mb-6">
+                <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                ✨ UMKM Lokal Terpercaya
+              </div>
+
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight tracking-tight">
+                Bersih <span className="text-cyan-300">Cemerlang</span>,
+                <br />
+                Hidup <span className="text-cyan-300">Cemerlang</span>
+              </h1>
+
+              <p className="text-lg sm:text-xl text-blue-100 max-w-xl mx-auto lg:mx-0 mb-10 leading-relaxed">
+                Sabun premium untuk segala kebutuhan — cuci piring, cuci tangan, kendaraan, hingga detergen. Hasil bersih cemerlang, harga bersahabat!
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4">
+                <Link
+                  href="/products"
+                  className="px-8 py-4 bg-white text-blue-700 text-base font-bold rounded-2xl shadow-xl shadow-blue-900/30 hover:shadow-2xl hover:shadow-blue-900/40 hover:-translate-y-1 transition-all duration-300 flex items-center gap-2"
+                >
+                  Belanja Sekarang
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </Link>
+                <a
+                  href="#keunggulan"
+                  className="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-base font-semibold rounded-2xl hover:bg-white/20 transition-all duration-300"
+                >
+                  Kenapa Kami?
+                </a>
+              </div>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight tracking-tight">
-              Bersih <span className="text-cyan-300">Cemerlang</span>,
-              <br />
-              Hidup <span className="text-cyan-300">Cemerlang</span>
-            </h1>
-
-            <p className="text-lg sm:text-xl text-blue-100 max-w-2xl mx-auto mb-10 leading-relaxed">
-              Sabun premium untuk segala kebutuhan — cuci piring, cuci tangan, kendaraan, hingga detergen. Hasil bersih cemerlang, harga bersahabat!
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/products"
-                className="px-8 py-4 bg-white text-blue-700 text-base font-bold rounded-2xl shadow-xl shadow-blue-900/30 hover:shadow-2xl hover:shadow-blue-900/40 hover:-translate-y-1 transition-all duration-300 flex items-center gap-2"
-              >
-                Belanja Sekarang
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
-              <a
-                href="#keunggulan"
-                className="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-base font-semibold rounded-2xl hover:bg-white/20 transition-all duration-300"
-              >
-                Kenapa Kami?
-              </a>
+            {/* Right: Product Image */}
+            <div className="flex justify-center lg:justify-end animate-fade-in">
+              <div className="relative">
+                <div className="absolute -inset-4 bg-white/10 rounded-3xl blur-2xl"></div>
+                <img
+                  src="/images/hero-products.jpeg"
+                  alt="Produk Cemerlang — Sabun Cuci Piring, Sabun Cuci Tangan, Porselin, Pewangi Lantai"
+                  className="relative w-full max-w-md lg:max-w-lg rounded-2xl shadow-2xl shadow-blue-900/40 hover:scale-105 transition-transform duration-500"
+                  style={{ animation: "float 3s ease-in-out infinite" }}
+                />
+              </div>
             </div>
           </div>
         </div>

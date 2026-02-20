@@ -58,7 +58,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-3">
-              Kenapa Pilih <span className="text-blue-600">SabunKu</span>?
+              Kenapa Pilih <span className="text-blue-600">Cemerlang</span>?
             </h2>
             <p className="text-slate-500 max-w-lg mx-auto">
               Produk berkualitas dengan harga terjangkau langsung dari produsen lokal
@@ -142,7 +142,7 @@ export default function LandingPage() {
       <footer className="border-t border-slate-100 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-sm text-slate-400">
-            © 2025 SabunKu — Produk Sabun Berkualitas untuk Kebutuhan Anda
+            © 2025 Cemerlang — Produk Sabun Berkualitas untuk Kebutuhan Anda
           </p>
         </div>
       </footer>

@@ -34,7 +34,7 @@ export default function Navbar() {
               </svg>
             </div>
             <span className="text-lg font-bold bg-gradient-to-r from-blue-700 to-cyan-600 bg-clip-text text-transparent">
-              SabunKu
+              Cemerlang
             </span>
           </Link>
 

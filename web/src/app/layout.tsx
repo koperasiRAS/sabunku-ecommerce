@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: {
-    default: "SabunKu — Produk Sabun Berkualitas dari UMKM Lokal",
+    default: "Cemerlang — Produk Sabun Berkualitas dari UMKM Lokal",
     template: "%s",
   },
   description:
@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "id_ID",
-    siteName: "SabunKu",
-    title: "SabunKu — Produk Sabun Berkualitas dari UMKM Lokal",
+    siteName: "Cemerlang",
+    title: "Cemerlang — Produk Sabun Berkualitas dari UMKM Lokal",
     description: "Produk sabun berkualitas premium dengan harga terjangkau. Pesan langsung via WhatsApp.",
   },
   robots: {

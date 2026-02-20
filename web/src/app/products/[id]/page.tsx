@@ -21,14 +21,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     .single();
 
   if (!product) {
-    return { title: "Produk Tidak Ditemukan — SabunKu" };
+    return { title: "Produk Tidak Ditemukan — Cemerlang" };
   }
 
   const price = product.discount_price || product.price;
-  const title = `${product.name} — SabunKu`;
+  const title = `${product.name} — Cemerlang`;
   const description =
     product.description ||
-    `Beli ${product.name} (${product.category}) dengan harga Rp${price.toLocaleString("id-ID")} di SabunKu. Produk berkualitas, pesan langsung via WhatsApp.`;
+    `Beli ${product.name} (${product.category}) dengan harga Rp${price.toLocaleString("id-ID")} di Cemerlang. Produk berkualitas, pesan langsung via WhatsApp.`;
 
   return {
     title,

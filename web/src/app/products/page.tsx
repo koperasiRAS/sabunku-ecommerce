@@ -6,7 +6,7 @@ import ProductGrid from "@/components/ProductGrid";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Katalog Produk — SabunKu",
+  title: "Katalog Produk — Cemerlang",
   description: "Temukan berbagai produk sabun berkualitas premium: sabun cuci piring, sabun cuci tangan, sabun kendaraan, dan detergen. Harga terjangkau, pesan via WhatsApp.",
 };
 
